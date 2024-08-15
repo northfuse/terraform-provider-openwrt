@@ -22,6 +22,7 @@ import (
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/dhcp/host"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/dhcp/odhcpd"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/internal/lucirpcglue"
+	"github.com/joneshf/terraform-provider-openwrt/openwrt/network/bridgevlan"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/network/device"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/network/globals"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/network/networkinterface"
@@ -162,6 +163,7 @@ func (p *openWrtProvider) DataSources(
 	ctx context.Context,
 ) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
+		bridgevlan.NewDataSource,
 		device.NewDataSource,
 		dhcp.NewDataSource,
 		dnsmasq.NewDataSource,
@@ -193,6 +195,7 @@ func (p *openWrtProvider) Resources(
 	ctx context.Context,
 ) []func() resource.Resource {
 	return []func() resource.Resource{
+		bridgevlan.NewResource,
 		device.NewResource,
 		dhcp.NewResource,
 		dnsmasq.NewResource,
