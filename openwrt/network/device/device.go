@@ -16,6 +16,14 @@ import (
 )
 
 const (
+	modeAttribute            = "mode"
+	modeAttributeDescription = "Specifies the wired ports to attach to this bridge."
+	modeUCIOption            = "mode"
+
+	ifnameAttribute            = "ifname"
+	ifnameAttributeDescription = "Specifies the wired ports to attach to this bridge."
+	ifnameUCIOption            = "ifname"
+
 	bridgePortsAttribute            = "ports"
 	bridgePortsAttributeDescription = "Specifies the wired ports to attach to this bridge."
 	bridgePortsUCIOption            = "ports"
@@ -57,6 +65,7 @@ const (
 	typeAttribute            = "type"
 	typeAttributeDescription = `The type of device. Currently, only "bridge" is supported.`
 	typeBridge               = "bridge"
+	typeMacVlan              = "macvlan"
 	typeUCIOption            = "type"
 
 	uciConfig = "network"
@@ -64,6 +73,32 @@ const (
 )
 
 var (
+	modeSchemaAttribute = lucirpcglue.StringSchemaAttribute[model, lucirpc.Options, lucirpc.Options]{
+		Description:       modeAttributeDescription,
+		ReadResponse:      lucirpcglue.ReadResponseOptionString(modelSetMode, modeAttribute, modeUCIOption),
+		ResourceExistence: lucirpcglue.NoValidation,
+		UpsertRequest:     lucirpcglue.UpsertRequestOptionString(modelGetMode, modeAttribute, modeUCIOption),
+		Validators: []validator.String{
+			lucirpcglue.RequiresAttributeEqualString(
+				path.MatchRoot(typeAttribute),
+				typeMacVlan,
+			),
+		},
+	}
+
+	ifnameSchemaAttribute = lucirpcglue.StringSchemaAttribute[model, lucirpc.Options, lucirpc.Options]{
+		Description:       ifnameAttributeDescription,
+		ReadResponse:      lucirpcglue.ReadResponseOptionString(modelSetIfname, ifnameAttribute, ifnameUCIOption),
+		ResourceExistence: lucirpcglue.NoValidation,
+		UpsertRequest:     lucirpcglue.UpsertRequestOptionString(modelGetIfname, ifnameAttribute, ifnameUCIOption),
+		Validators: []validator.String{
+			lucirpcglue.RequiresAttributeEqualString(
+				path.MatchRoot(typeAttribute),
+				typeMacVlan,
+			),
+		},
+	}
+
 	bridgePortsSchemaAttribute = lucirpcglue.SetStringSchemaAttribute[model, lucirpc.Options, lucirpc.Options]{
 		Description:       bridgePortsAttributeDescription,
 		ReadResponse:      lucirpcglue.ReadResponseOptionSetString(modelSetBridgePorts, bridgePortsAttribute, bridgePortsUCIOption),
@@ -167,6 +202,8 @@ var (
 		nameAttribute:               nameSchemaAttribute,
 		txQueueLengthAttribute:      txQueueLengthSchemaAttribute,
 		typeAttribute:               typeSchemaAttribute,
+		modeAttribute:               modeSchemaAttribute,
+		ifnameAttribute:             ifnameSchemaAttribute,
 		lucirpcglue.IdAttribute:     lucirpcglue.IdSchemaAttribute(modelGetId, modelSetId),
 	}
 
@@ -188,6 +225,7 @@ var (
 		Validators: []validator.String{
 			stringvalidator.OneOf(
 				typeBridge,
+				typeMacVlan,
 			),
 		},
 	}
@@ -225,8 +263,12 @@ type model struct {
 	Name               types.String `tfsdk:"name"`
 	TXQueueLength      types.Int64  `tfsdk:"txqueuelen"`
 	Type               types.String `tfsdk:"type"`
+	Mode               types.String `tfsdk:"mode"`
+	Ifname             types.String `tfsdk:"ifname"`
 }
 
+func modelGetIfname(m model) types.String           { return m.Ifname }
+func modelGetMode(m model) types.String             { return m.Mode }
 func modelGetBridgePorts(m model) types.Set         { return m.BridgePorts }
 func modelGetBringUpEmptyBridge(m model) types.Bool { return m.BringUpEmptyBridge }
 func modelGetDADTransmits(m model) types.Int64      { return m.DADTransmits }
@@ -239,6 +281,8 @@ func modelGetName(m model) types.String             { return m.Name }
 func modelGetTXQueueLength(m model) types.Int64     { return m.TXQueueLength }
 func modelGetType(m model) types.String             { return m.Type }
 
+func modelSetIfname(m *model, value types.String)           { m.Ifname = value }
+func modelSetMode(m *model, value types.String)             { m.Mode = value }
 func modelSetBridgePorts(m *model, value types.Set)         { m.BridgePorts = value }
 func modelSetBringUpEmptyBridge(m *model, value types.Bool) { m.BringUpEmptyBridge = value }
 func modelSetDADTransmits(m *model, value types.Int64)      { m.DADTransmits = value }
