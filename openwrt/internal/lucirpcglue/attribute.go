@@ -184,7 +184,7 @@ func IdSchemaAttribute[Model any](
 			set(&model, value)
 			return ctx, model, diagnostics
 		},
-		ResourceExistence: Required,
+		ResourceExistence: NoValidation,
 		UpsertRequest: func(
 			ctx context.Context,
 			fullTypeName string,
