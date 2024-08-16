@@ -21,6 +21,7 @@ import (
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/dhcp/domain"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/dhcp/host"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/dhcp/odhcpd"
+	"github.com/joneshf/terraform-provider-openwrt/openwrt/firewall/zone"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/internal/lucirpcglue"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/network/bridgevlan"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/network/device"
@@ -177,6 +178,7 @@ func (p *openWrtProvider) DataSources(
 		system.NewDataSource,
 		wifidevice.NewDataSource,
 		wifiiface.NewDataSource,
+		zone.NewDataSource,
 	}
 }
 
@@ -209,6 +211,7 @@ func (p *openWrtProvider) Resources(
 		system.NewResource,
 		wifidevice.NewResource,
 		wifiiface.NewResource,
+		zone.NewResource,
 	}
 }
 
