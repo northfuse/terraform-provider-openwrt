@@ -48,6 +48,10 @@ const (
 	macAddressAttributeDescription = "Override the MAC Address of this interface."
 	macAddressUCIOption            = "macaddr"
 
+	metricAttribute            = "metric"
+	metricAttributeDescription = "Override the default MTU on this interface."
+	metricUCIOption            = "metric"
+
 	mtuAttribute            = "mtu"
 	mtuAttributeDescription = "Override the default MTU on this interface."
 	mtuUCIOption            = "mtu"
@@ -191,6 +195,16 @@ var (
 		},
 	}
 
+	metricSchemaAttribute = lucirpcglue.Int64SchemaAttribute[model, lucirpc.Options, lucirpc.Options]{
+		Description:       metricAttributeDescription,
+		ReadResponse:      lucirpcglue.ReadResponseOptionInt64(modelSetMetric, metricAttribute, metricUCIOption),
+		ResourceExistence: lucirpcglue.NoValidation,
+		UpsertRequest:     lucirpcglue.UpsertRequestOptionInt64(modelGetMetric, metricAttribute, metricUCIOption),
+		Validators: []validator.Int64{
+			int64validator.Between(0, 4294967295),
+		},
+	}
+
 	mtuSchemaAttribute = lucirpcglue.Int64SchemaAttribute[model, lucirpc.Options, lucirpc.Options]{
 		Description:       mtuAttributeDescription,
 		ReadResponse:      lucirpcglue.ReadResponseOptionInt64(modelSetMTU, mtuAttribute, mtuUCIOption),
@@ -295,6 +309,7 @@ var (
 		ipAddressAttribute:         ipAddressSchemaAttribute,
 		macAddressAttribute:        macAddressSchemaAttribute,
 		mtuAttribute:               mtuSchemaAttribute,
+		metricAttribute:            metricSchemaAttribute,
 		netmaskAttribute:           netmaskSchemaAttribute,
 		peerDNSAttribute:           peerDNSSchemaAttribute,
 		protocolAttribute:          protocolSchemaAttribute,
@@ -340,8 +355,10 @@ type model struct {
 	Protocol          types.String `tfsdk:"proto"`
 	RequestingAddress types.String `tfsdk:"reqaddress"`
 	RequestingPrefix  types.String `tfsdk:"reqprefix"`
+	Metric            types.Int64  `tfsdk:"metric"`
 }
 
+func modelGetMetric(m model) types.Int64             { return m.Metric }
 func modelGetBringUpOnBoot(m model) types.Bool       { return m.BringUpOnBoot }
 func modelGetDevice(m model) types.String            { return m.Device }
 func modelGetDisabled(m model) types.Bool            { return m.Disabled }
@@ -358,6 +375,7 @@ func modelGetProtocol(m model) types.String          { return m.Protocol }
 func modelGetRequestingAddress(m model) types.String { return m.RequestingAddress }
 func modelGetRequestingPrefix(m model) types.String  { return m.RequestingPrefix }
 
+func modelSetMetric(m *model, value types.Int64)             { m.Metric = value }
 func modelSetBringUpOnBoot(m *model, value types.Bool)       { m.BringUpOnBoot = value }
 func modelSetDevice(m *model, value types.String)            { m.Device = value }
 func modelSetDisabled(m *model, value types.Bool)            { m.Disabled = value }

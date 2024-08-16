@@ -55,6 +55,7 @@ resource "openwrt_network_interface" "testing" {
 - `ip6assign` (Number) Delegate a prefix of given length to this interface
 - `ipaddr` (String) IP address of the interface
 - `macaddr` (String) Override the MAC Address of this interface.
+- `metric` (Number) Override the default MTU on this interface.
 - `mtu` (Number) Override the default MTU on this interface.
 - `netmask` (String) Netmask of the interface
 - `peerdns` (Boolean) Use DHCP-provided DNS servers.
