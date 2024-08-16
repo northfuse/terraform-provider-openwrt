@@ -25,7 +25,6 @@ resource "openwrt_network_switch" "testing" {
 
 ### Required
 
-- `id` (String) Name of the section. This name is only used when interacting with UCI directly.
 - `name` (String) Name of the switch. This name is what is shown in LuCI or the `name` field in Terraform. This is not the UCI config name.
 
 ### Optional
@@ -33,6 +32,7 @@ resource "openwrt_network_switch" "testing" {
 - `enable_mirror_rx` (Boolean) Mirror received packets from the `mirror_source_port` to the `mirror_monitor_port`.
 - `enable_mirror_tx` (Boolean) Mirror transmitted packets from the `mirror_source_port` to the `mirror_monitor_port`.
 - `enable_vlan` (Boolean) Enables VLAN functionality.
+- `id` (String) Name of the section. This name is only used when interacting with UCI directly.
 - `mirror_monitor_port` (Number) Switch port to which packets are mirrored.
 - `mirror_source_port` (Number) Switch port from which packets are mirrored.
 - `reset` (Boolean) Reset the switch.

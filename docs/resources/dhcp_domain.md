@@ -25,9 +25,12 @@ resource "openwrt_dhcp_domain" "testing" {
 
 ### Required
 
-- `id` (String) Name of the section. This name is only used when interacting with UCI directly.
 - `ip` (String) The IP address to be used for this domain.
 - `name` (String) Hostname to assign.
+
+### Optional
+
+- `id` (String) Name of the section. This name is only used when interacting with UCI directly.
 
 ## Import
 

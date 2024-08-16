@@ -3,6 +3,7 @@ package lucirpcglue
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -97,7 +98,13 @@ func (d *resource[Model]) Create(
 		return
 	}
 
-	id := d.getId(model).ValueString()
+	var id string
+	if d.getId(model).IsNull() || len(d.getId(model).ValueString()) == 0 {
+		i := rand.Int()
+		id = fmt.Sprintf("tfcfg%d", i)
+	} else {
+		id = d.getId(model).ValueString()
+	}
 	ctx = tflog.SetField(ctx, "section", fmt.Sprintf("%s.%s", d.uciConfig, id))
 	diagnostics = CreateSection(
 		ctx,

@@ -34,13 +34,13 @@ resource "openwrt_network_switch_vlan" "testing" {
 ### Required
 
 - `device` (String) The switch to configure.
-- `id` (String) Name of the section. This name is only used when interacting with UCI directly.
 - `ports` (String) A string of space-separated port indicies that should be associated with the VLAN. Adding the suffix `"t"` to a port indicates that egress packets should be tagged, for example `"0 1 3t 5t"`.
 - `vlan` (Number) The VLAN "table index" to configure. This index corresponds to the order on LuCI's UI
 
 ### Optional
 
 - `description` (String) A human-readable description of the VLAN configuration.
+- `id` (String) Name of the section. This name is only used when interacting with UCI directly.
 - `vid` (Number) The VLAN tag number to use.
 
 ## Import
