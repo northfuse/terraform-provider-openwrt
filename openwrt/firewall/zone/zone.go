@@ -38,7 +38,7 @@ const (
 )
 
 var (
-	actionValidator = []validator.String{
+	TypeValidators = []validator.String{
 		stringvalidator.OneOf(
 			typeAccept,
 			typeReject,
@@ -58,7 +58,7 @@ var (
 		ReadResponse:      lucirpcglue.ReadResponseOptionString(modelSetForward, forwardAttribute, forwardUCIOption),
 		ResourceExistence: lucirpcglue.Required,
 		UpsertRequest:     lucirpcglue.UpsertRequestOptionString(modelGetForward, forwardAttribute, forwardUCIOption),
-		Validators:        actionValidator,
+		Validators:        TypeValidators,
 	}
 
 	inputSchemaAttribute = lucirpcglue.StringSchemaAttribute[model, lucirpc.Options, lucirpc.Options]{
@@ -66,7 +66,7 @@ var (
 		ReadResponse:      lucirpcglue.ReadResponseOptionString(modelSetInput, inputAttribute, inputUCIOption),
 		ResourceExistence: lucirpcglue.Required,
 		UpsertRequest:     lucirpcglue.UpsertRequestOptionString(modelGetInput, inputAttribute, inputUCIOption),
-		Validators:        actionValidator,
+		Validators:        TypeValidators,
 	}
 
 	outputSchemaAttribute = lucirpcglue.StringSchemaAttribute[model, lucirpc.Options, lucirpc.Options]{
@@ -74,7 +74,7 @@ var (
 		ReadResponse:      lucirpcglue.ReadResponseOptionString(modelSetOutput, outputAttribute, outputUCIOption),
 		ResourceExistence: lucirpcglue.Required,
 		UpsertRequest:     lucirpcglue.UpsertRequestOptionString(modelGetOutput, outputAttribute, outputUCIOption),
-		Validators:        actionValidator,
+		Validators:        TypeValidators,
 	}
 
 	schemaAttributes = map[string]lucirpcglue.SchemaAttribute[model, lucirpc.Options, lucirpc.Options]{
