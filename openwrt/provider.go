@@ -21,6 +21,7 @@ import (
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/dhcp/domain"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/dhcp/host"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/dhcp/odhcpd"
+	"github.com/joneshf/terraform-provider-openwrt/openwrt/firewall/forwarding"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/firewall/zone"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/internal/lucirpcglue"
 	"github.com/joneshf/terraform-provider-openwrt/openwrt/network/bridgevlan"
@@ -169,6 +170,7 @@ func (p *openWrtProvider) DataSources(
 		dhcp.NewDataSource,
 		dnsmasq.NewDataSource,
 		domain.NewDataSource,
+		forwarding.NewDataSource,
 		globals.NewDataSource,
 		host.NewDataSource,
 		networkinterface.NewDataSource,
@@ -202,6 +204,7 @@ func (p *openWrtProvider) Resources(
 		dhcp.NewResource,
 		dnsmasq.NewResource,
 		domain.NewResource,
+		forwarding.NewResource,
 		globals.NewResource,
 		host.NewResource,
 		networkinterface.NewResource,
